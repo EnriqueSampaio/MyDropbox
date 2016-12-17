@@ -1,5 +1,5 @@
 {
-  "name": "mydropboxlocal",
+  "name": "mydropboxcloud",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,9 +8,7 @@
   },
   "author": "Eduardo e Enrique",
   "license": "ISC",
-  "dependencies": {
-    "node-watch": "^0.4.1",
-    "request": "^2.79.0",
-    "request-promise-native": "^1.0.3"
+  "devDependencies": {
+    "generator-express": "^2.14.0"
   }
 }
