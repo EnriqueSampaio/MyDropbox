@@ -6,8 +6,10 @@ html(lang='en')
     title= title
     block css
       link(rel='stylesheet', href='/css/style.css')
-    block js
-      if ENV_DEVELOPMENT
-        script(src='http://localhost:35729/livereload.js')
   body
     block content
+    script(src='http://localhost:35729/livereload.js')
+    script(src='/components/jquery/dist/jquery.min.js')
+    script(src='/components/bootstrap-sass/assets/javascripts/bootstrap.min.js')
+    block js
+      if ENV_DEVELOPMENT

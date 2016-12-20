@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .container
+    .row
+      .col-sm-12
+        h1= title
+        p Welcome to #{title}
+        form#fileUpload
+          .form-group
+            label(for='exampleInputFile') File input
+            input#exampleInputFile(type='file', name='newFile')
+            p.help-block Envie um arquivo para a nuvem.
+          button.btn.btn-default(type='submit') Submit
+
+block js
+  script(src='/js/index.js')
