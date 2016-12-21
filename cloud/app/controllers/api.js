@@ -96,7 +96,8 @@ router.post('/removeFile', function (req, res, next) {
 
 // Envia o arquivo requisitado
 router.post('/getFile', function (req, res, next) {
-  var file = fs.readFileSync(prefix + req.body.path).toString('base64');
+  var file = fs.readFileSync(prefix + req.body.path);
+  console.log(file.byteLength);
   res.send(file);
 });
 

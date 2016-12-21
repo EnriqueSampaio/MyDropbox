@@ -112,11 +112,13 @@ function updateFiles(fileList, pathTo) {
           uri: cloudUrl + 'api/getFile',
           formData: {
             path: pathTo + file.name
-          }
+          },
+          encoding: null
         };
 
         request(options).then(function (body) {
-          fs.writeFileSync(prefix + pathTo + file.name, Buffer.from(body, 'base64'));
+          console.log(body.byteLength);
+          fs.writeFileSync(prefix + pathTo + file.name, body);
         }).catch(function (err) {
           console.log(err);
         });
