@@ -98,8 +98,6 @@ router.post('/removeFile', function (req, res, next) {
 router.post('/getFile', function (req, res, next) {
   var file = fs.readFileSync(prefix + req.body.path);
 
-  console.log(file.byteLength);
-
   res.send(file);
 });
 
