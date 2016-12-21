@@ -117,7 +117,6 @@ function updateFiles(fileList, pathTo) {
         };
 
         request(options).then(function (body) {
-          console.log(body.byteLength);
           fs.writeFileSync(prefix + pathTo + file.name, body);
         }).catch(function (err) {
           console.log(err);
@@ -175,7 +174,6 @@ function fileFromCloud(fileList, fileName) {
 
     return false;
   } else {
-
     for (var i = 0; i < fileList.length; i++) {
       var file = fileList[i];
 

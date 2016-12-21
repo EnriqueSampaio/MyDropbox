@@ -2,7 +2,8 @@ var mongoose = require('../../app').getDBInstance();
 
 var itemSchema = mongoose.Schema({
   hostname: String,
-  _id: String
+  _id: String,
+  size: Number
 });
 
 itemSchema.virtual('filePath').get(function() {
