@@ -61,10 +61,7 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     });
     yield* FileManager.move(src, p);
 
-    console.log('*******************');    
-    console.log(src);
-
-    request.post({ url: api + 'removeLynk', form: { path: src.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
+    request.post({ url: api + 'removeLynk', form: { path: src[0].split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
     request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
 
     this.body = 'Move Succeed!';
