@@ -68,9 +68,10 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
       var newPath = '';
       if (p.split('myDropboxFolder/').length > 1) {
         newPath = p.split('myDropboxFolder/')[1];
+        newPath += '/' + path.basename(src[i]);
+      } else {
+        newPath += path.basename(src[i]);
       }
-      
-      newPath += path.basename(src[i]);
 
       console.log(newPath);
       request.post({ url: api + 'removeLynk', form: { path: src[i].split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
