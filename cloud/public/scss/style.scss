@@ -1,5 +1,8 @@
-$fa-font-path: '/components/fonts';
-@import '../components/bootstrap-sass/assets/stylesheets/_bootstrap';
-@import '../components/font-awesome/scss/font-awesome';
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 
-
+a {
+  color: #00B7FF;
+}

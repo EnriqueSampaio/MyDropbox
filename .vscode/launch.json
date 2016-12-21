@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceRoot}/cloud/app.js",
+      "program": "${workspaceRoot}/local/index.js",
       "cwd": "${workspaceRoot}"
     },
     {

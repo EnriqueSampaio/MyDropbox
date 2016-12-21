@@ -9,6 +9,7 @@ var config = {
       name: 'mydropboxcloud'
     },
     port: process.env.PORT || 3000,
+    database: 'mongodb://localhost/myDropbox'
   },
 
   test: {
@@ -17,6 +18,7 @@ var config = {
       name: 'mydropboxcloud'
     },
     port: process.env.PORT || 3000,
+    database: 'mongodb://localhost/myDropbox'
   },
 
   production: {
@@ -25,6 +27,7 @@ var config = {
       name: 'mydropboxcloud'
     },
     port: process.env.PORT || 3000,
+    database: 'mongodb://localhost/myDropbox'
   }
 };
 

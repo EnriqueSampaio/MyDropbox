@@ -13,6 +13,10 @@
     "node-watch": "^0.4.1",
     "polling-to-event": "^2.0.2",
     "request": "^2.79.0",
-    "request-promise-native": "^1.0.3"
+    "request-promise-native": "^1.0.3",
+    "rimraf": "^2.5.4"
+  },
+  "jshintConfig": {
+    "loopfunc": true
   }
 }
