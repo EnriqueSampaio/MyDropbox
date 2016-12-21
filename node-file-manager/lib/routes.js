@@ -6,6 +6,7 @@ var koaRouter = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 var formParser = require('co-busboy');
 var request = require('request');
+var toArray = require('stream-to-array');
 
 var Tools = require('./tools');
 var FilePath = require('./fileMap').filePath;
@@ -106,16 +107,28 @@ router.post('/api/(.*)', Tools.loadRealPath, Tools.checkPathNotExists, function*
     this.body = 'Create Folder Succeed!';
   }
   else if (type === 'UPLOAD_FILE') {
+    var instance = this;
     var formData = yield formParser(this.req);
     if (formData.fieldname === 'upload') {
-      console.log(formData);
-      origFs.writeFileSync(p, formData)
-      // var writeStream = origFs.createWriteStream(p);
-      // formData.pipe(writeStream);
+      toArray(formData).then(function (parts) {
+        var buffers = [];
 
-      request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});
+        for (var i = 0; i < parts.length; i++) {
+          var part = parts[i];
+          buffers.push((part instanceof Buffer) ? part : Buffer.from(part));
+        }
 
-      this.body = 'Upload File Succeed!';
+        return Buffer.concat(buffers);
+      }).then(function (buffer) {
+        console.log(buffer);
+        origFs.writeFileSync(p, buffer);
+        // var writeStream = origFs.createWriteStream(p);
+        // formData.pipe(writeStream);
+
+        request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});
+
+        instance.body = 'Upload File Succeed!';
+      });
     }
     else {
       this.status = 400;
