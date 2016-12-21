@@ -18,7 +18,6 @@ var hostname = os.userInfo().username + '@' + os.hostname();
 watcher.on('change', function (path) {
   var file = path.replace('myDropboxFolder/', '');
 
-  console.log(fileFromCloud(lastPoll, file) + ' ' + isReceiving);
   if (!isReceiving || !fileFromCloud(lastPoll, file)) {
     if (fs.existsSync(path)) {
       if (fs.statSync(path).isFile()) {
