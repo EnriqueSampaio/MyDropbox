@@ -119,7 +119,7 @@ function walkFiles(dir) {
     files.map(function (file) {
       var stats = fs.statSync(prefix + dir + file);
 
-      return Item.find({ _id: dir + file }, 'hostname size').exec().then(function (item) {
+      return Item.find({ _id: dir + file }, 'hostname').exec().then(function (item) {
         if (stats.isDirectory()) {
           return walkFiles(dir + file + '/').then(function (list) {
             return { name: file, hostname: item[0].hostname, files: list };
