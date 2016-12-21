@@ -92,18 +92,20 @@ emitter.on("longpoll", function (data) {
   isReceiving = true;
   lastPoll = data;
 
-  updateFiles(data, './');
+  updateFiles(data, './').then(function (results) {
+    isReceiving = false;
+  }).catch(function (err) {
+    console.log(err);
+  });
 });
 
 
 function updateFiles(fileList, pathTo) {
-  for (var i = 0; i < fileList.length; i++) {
-    isReceiving = true;
-    var file = fileList[i];
-
+  isReceiving = true;
+  return Promise.all(fileList.map(function (file) {
     if (file.files) {
       mkdirp.sync(prefix + pathTo + file.name);
-      updateFiles(file.files, pathTo + file.name + '/');
+      return updateFiles(file.files, pathTo + file.name + '/');
     } else if (file.hostname != hostname) {
       if (!fs.existsSync(prefix + pathTo + file.name)) {
         var options = {
@@ -115,40 +117,38 @@ function updateFiles(fileList, pathTo) {
           encoding: null
         };
 
-        request(options).then(function (body) {
+        return request(options).then(function (body) {
           fs.writeFileSync(prefix + pathTo + file.name, body);
-          setTimeout(function() {
-            isReceiving = false;
-          }, 5000);   
           console.log('Arquivo salvo com sucesso!');
-        }).catch(function (err) {
-          console.log(err);
+          return null
         });
+      } else {
+        return null;
       }
     }
-  }
+  })).then(function (results) {
+    var filesToRemove = fs.readdirSync(prefix + pathTo);
+    return Promise.all(filesToRemove.filter(function (fileToRemove) {
+      for (var i = 0; i < fileList.length; i++) {
+        var file = fileList[i];
 
-  var filesToRemove = fs.readdirSync(prefix + pathTo);
-
-  filesToRemove = filesToRemove.filter(function (fileToRemove) {
-    for (var i = 0; i < fileList.length; i++) {
-      var file = fileList[i];
-
-      if (file.name === fileToRemove) {
-        if (fs.statSync(prefix + pathTo + fileToRemove).isDirectory() && file.files) {
-          return false;
-        } else if (fs.statSync(prefix + pathTo + fileToRemove).isFile() && !file.files) {
-          return false;
+        if (file.name === fileToRemove) {
+          if (fs.statSync(prefix + pathTo + fileToRemove).isDirectory() && file.files) {
+            return false;
+          } else if (fs.statSync(prefix + pathTo + fileToRemove).isFile() && !file.files) {
+            return false;
+          }
         }
       }
-    }
 
-    return true;
+      return true;
+    }));
+  }).then(function (filesToRemove) {
+    return Promise.all(filesToRemove.map(function (fileToRemove) {
+      rimraf.sync(prefix + pathTo + fileToRemove);
+      return null;
+    }));
   });
-
-  for (var i = 0; i < filesToRemove.length; i++) {
-    rimraf.sync(prefix + pathTo + filesToRemove[i]);
-  }
 }
 
 function fileFromCloud(fileList, fileName) {
