@@ -117,6 +117,7 @@ function updateFiles(fileList, pathTo) {
         };
 
         request(options).then(function (body) {
+          console.log(body.byteLength);
           fs.writeFileSync(prefix + pathTo + file.name, body);
         }).catch(function (err) {
           console.log(err);
