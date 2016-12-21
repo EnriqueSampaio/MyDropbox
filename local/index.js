@@ -18,6 +18,7 @@ var hostname = os.userInfo().username + '@' + os.hostname();
 watcher.on('change', function (path) {
   var file = path.replace('myDropboxFolder/', '');
 
+  console.log(fileFromCloud(lastPoll, file) + ' ' + isReceiving);
   if (!isReceiving || !fileFromCloud(lastPoll, file)) {
     if (fs.existsSync(path)) {
       if (fs.statSync(path).isFile()) {
@@ -97,9 +98,8 @@ emitter.on("longpoll", function (data) {
 
 
 function updateFiles(fileList, pathTo) {
-  isReceiving = true;
-
   for (var i = 0; i < fileList.length; i++) {
+    isReceiving = true;
     var file = fileList[i];
 
     if (file.files) {
@@ -117,8 +117,11 @@ function updateFiles(fileList, pathTo) {
         };
 
         request(options).then(function (body) {
-          console.log(body.byteLength);
           fs.writeFileSync(prefix + pathTo + file.name, body);
+          setTimeout(function() {
+            isReceiving = false;
+          }, 5000);   
+          console.log('Arquivo salvo com sucesso!');
         }).catch(function (err) {
           console.log(err);
         });
@@ -147,10 +150,6 @@ function updateFiles(fileList, pathTo) {
   for (var i = 0; i < filesToRemove.length; i++) {
     rimraf.sync(prefix + pathTo + filesToRemove[i]);
   }
-
-  setTimeout(function () {
-    isReceiving = false;
-  }, 3000);
 }
 
 function fileFromCloud(fileList, fileName) {

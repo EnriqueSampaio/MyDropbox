@@ -71,8 +71,8 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     if (!target) return this.status = 400;
     yield* FileManager.rename(p, FilePath(target));
 
-    request.post({ url: api + 'removeLynk', form: { path: target.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
-    request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
+    request.post({ url: api + 'removeLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
+    request.post({ url: api + 'createLynk', form: { path: FilePath(target).split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
 
     this.body = 'Rename Succeed!';
   }
