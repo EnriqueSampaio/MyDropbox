@@ -64,8 +64,12 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     console.log('************');
     console.log(p);
 
+    var path = p.split('myDropboxFolder/')[1] || '';
+
+    console.log(path);
+
     request.post({ url: api + 'removeLynk', form: { path: src[0].split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
-    request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
+    request.post({ url: api + 'createLynk', form: { path: path } }, function (err, httpResponse, body) { });
 
     this.body = 'Move Succeed!';
   }
