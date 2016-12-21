@@ -61,9 +61,6 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     });
     yield* FileManager.move(src, p);
 
-    console.log('************');
-    console.log(p);
-
     for (var i = 0; i < src.length; i++) {
       var newPath = '';
       if (p.split('myDropboxFolder/').length > 1) {
@@ -73,7 +70,6 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
         newPath += path.basename(src[i]);
       }
 
-      console.log(newPath);
       request.post({ url: api + 'removeLynk', form: { path: src[i].split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
       request.post({ url: api + 'createLynk', form: { path: newPath } }, function (err, httpResponse, body) { });
     }
