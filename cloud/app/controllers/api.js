@@ -48,8 +48,7 @@ router.post('/createLynk', function (req, res, next) {
 router.post('/sendFolder', function (req, res, next) {
   var folder = {
     _id: req.body.path,
-    hostname: req.body.hostname,
-    size: 0
+    hostname: req.body.hostname
   };
 
   Item.update({ _id: req.body.path }, folder, { upsert: true }, function (err, folder) {
@@ -66,8 +65,7 @@ router.post('/sendFolder', function (req, res, next) {
 router.post('/sendFile', function (req, res, next) {
   var file = {
     _id: req.body.path,
-    hostname: req.body.hostname,
-    size: req.files.newFile.byteLength
+    hostname: req.body.hostname
   };
 
   Item.update({ _id: req.body.path }, file, { upsert: true }, function (err, file) {
@@ -124,10 +122,10 @@ function walkFiles(dir) {
       return Item.find({ _id: dir + file }, 'hostname size').exec().then(function (item) {
         if (stats.isDirectory()) {
           return walkFiles(dir + file + '/').then(function (list) {
-            return { name: file, hostname: item[0].hostname, files: list, size: item[0].size };
+            return { name: file, hostname: item[0].hostname, files: list };
           });
         } else {
-          return { name: file, hostname: item[0].hostname, size: item[0].size };
+          return { name: file, hostname: item[0].hostname };
         }
       });
     })

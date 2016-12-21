@@ -108,8 +108,9 @@ router.post('/api/(.*)', Tools.loadRealPath, Tools.checkPathNotExists, function*
   else if (type === 'UPLOAD_FILE') {
     var formData = yield formParser(this.req);
     if (formData.fieldname === 'upload') {
-      var writeStream = origFs.createWriteStream(p);
-      formData.pipe(writeStream);
+      origFs.writeFileSync(p, formData)
+      // var writeStream = origFs.createWriteStream(p);
+      // formData.pipe(writeStream);
 
       request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});
 
