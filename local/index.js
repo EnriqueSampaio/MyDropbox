@@ -8,7 +8,7 @@ var watch = require('node-watch');
 
 var watcher = watch('./myDropboxFolder');
 
-var cloudUrl = 'http://localhost:3000/';
+var cloudUrl = 'http://ec2-35-165-152-155.us-west-2.compute.amazonaws.com:3000/';
 
 var isReceiving = false;
 var lastPoll = [];
