@@ -65,7 +65,11 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     console.log(p);
 
     for (var i = 0; i < src.length; i++) {
-      var newPath = p.split('myDropboxFolder/')[1] || '';
+      var newPath = '';
+      if (p.split('myDropboxFolder/').length > 1) {
+        newPath = p.split('myDropboxFolder/')[1];
+      }
+      
       newPath += path.basename(src[i]);
 
       console.log(newPath);
