@@ -108,6 +108,7 @@ router.post('/api/(.*)', Tools.loadRealPath, Tools.checkPathNotExists, function*
   else if (type === 'UPLOAD_FILE') {
     var formData = yield formParser(this.req);
     if (formData.fieldname === 'upload') {
+      console.log(formData);
       origFs.writeFileSync(p, formData)
       // var writeStream = origFs.createWriteStream(p);
       // formData.pipe(writeStream);

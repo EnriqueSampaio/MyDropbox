@@ -4,6 +4,10 @@ var express = require('express'),
 
 var fileManager = require('child_process').spawn('node', ['--harmony', '../node-file-manager/lib/index.js', '-p', '8000', '-d', '/home/ubuntu/MyDropbox/cloud/public/myDropboxFolder/']);
 
+fileManager.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
+
 var exports = module.exports = {};
 
 var app = express();
