@@ -102,7 +102,7 @@ router.post('/getFile', function (req, res, next) {
 
   console.log(file.byteLength);
 
-  res.sendFile(file);
+  res.send(file);
 });
 
 // Envia a lista de arquivos e subpastas
