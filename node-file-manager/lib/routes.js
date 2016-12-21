@@ -120,15 +120,14 @@ router.post('/api/(.*)', Tools.loadRealPath, Tools.checkPathNotExists, function*
 
         return Buffer.concat(buffers);
       }).then(function (buffer) {
-        console.log(buffer);
         origFs.writeFileSync(p, buffer);
         // var writeStream = origFs.createWriteStream(p);
         // formData.pipe(writeStream);
 
         request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});
 
-        instance.body = 'Upload File Succeed!';
       });
+      instance.body = 'Upload File Succeed!';
     }
     else {
       this.status = 400;
