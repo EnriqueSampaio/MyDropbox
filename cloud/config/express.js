@@ -22,7 +22,6 @@ module.exports = function(app, config) {
     limits: {
       fieldNameSize: 1000,
       fieldSize: 10000000000,
-      fileSize: 10000000000
     }
   }));
   app.use(cookieParser());
