@@ -61,11 +61,18 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     });
     yield* FileManager.move(src, p);
 
-    console.log('************');
-    console.log(p);
+    for (var i = 0; i < src.length; i++) {
+      var newPath = '';
+      if (p.split('myDropboxFolder/').length > 1) {
+        newPath = p.split('myDropboxFolder/')[1];
+        newPath += '/' + path.basename(src[i]);
+      } else {
+        newPath += path.basename(src[i]);
+      }
 
-    request.post({ url: api + 'removeLynk', form: { path: src[0].split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
-    request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
+      request.post({ url: api + 'removeLynk', form: { path: src[i].split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
+      request.post({ url: api + 'createLynk', form: { path: newPath } }, function (err, httpResponse, body) { });
+    }
 
     this.body = 'Move Succeed!';
   }
@@ -85,7 +92,7 @@ router.put('/api/(.*)', Tools.loadRealPath, Tools.checkPathExists, bodyParser(),
     if (!src) return this.status = 400;
     yield* FileManager.archive(C.data.root, archive, src, !!this.request.body.dirs);
 
-    request.post({ url: api + 'createLynk', form: { path: archive.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});
+    request.post({ url: api + 'createLynk', form: { path: archive.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
 
     this.body = 'Create Archive Succeed!';
   }
@@ -105,7 +112,7 @@ router.post('/api/(.*)', Tools.loadRealPath, Tools.checkPathNotExists, function*
   else if (type === 'CREATE_FOLDER') {
     yield* FileManager.mkdirs(p);
 
-    request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});        
+    request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
 
     this.body = 'Create Folder Succeed!';
   }
@@ -127,7 +134,7 @@ router.post('/api/(.*)', Tools.loadRealPath, Tools.checkPathNotExists, function*
         // var writeStream = origFs.createWriteStream(p);
         // formData.pipe(writeStream);
 
-        request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) {});
+        request.post({ url: api + 'createLynk', form: { path: p.split('myDropboxFolder/')[1] } }, function (err, httpResponse, body) { });
 
       });
       instance.body = 'Upload File Succeed!';
